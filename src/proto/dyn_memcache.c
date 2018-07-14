@@ -1538,7 +1538,7 @@ memcache_copy_bulk(struct msg *dst, struct msg *src)
 void
 memcache_post_coalesce(struct msg *request)
 {
-    struct msg *response = request->peer;
+    struct msg *response = request->selected_rsp;
     struct msg *sub_msg;
     uint32_t i;
     rstatus_t status;
@@ -1551,7 +1551,7 @@ memcache_post_coalesce(struct msg *request)
     }
 
     for (i = 0; i < array_n(request->keys); i++) {      /* for each  key */
-        sub_msg = request->frag_seq[i]->peer;           /* get it's peer response */
+        sub_msg = request->frag_seq[i]->selected_rsp;           /* get it's peer response */
         if (sub_msg == NULL) {
             response->owner->err = 1;
             return;
